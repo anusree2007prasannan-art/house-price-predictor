@@ -2,6 +2,36 @@ import streamlit as st
 import numpy as np
 import pickle
 import base64
+st.set_page_config(page_title="Dream House", layout="centered")
+st.markdown("""
+<style>
+/* Force all the text black */
+body, .stApp, label, h1, h2, h3, p {color: black !important; }
+
+/* Force inputs white bg + black text */
+div[data-baseweb="input"] input {
+    color: black !important;
+    background-color: white !important;
+}
+
+div[data-baseweb="input"] {background-color: white !important;}
+
+/* Force button - works in both modes */
+div.stButton > button,
+div[data-tested="stFormSubmitButton"] > button {
+    background: white !important;
+    background-color: black !important;
+    border: 1px solid #cccccc !important;
+    border_radius: 8px;
+    font-weight: bold;
+}
+div.stButton > button:hover 
+div[data-tested="stFormSumitButton"] > button:hover {
+    background: #f5f5f5 !important;
+    backgroun-color: #f5f5f5 !important;
+}
+</style>
+""", unsafe_allow_html=True)
 try:
     model=pickle.load(open("house_model.pkl","rb"))
 except Exception as e:
@@ -17,6 +47,10 @@ def add_bg_from_local(image_file):
         .stApp {{
             background-image:url("data:image/jpeg;base64,{encoded}");
             background-size:cover; 
+            color: black !important;
+        }}
+        label, h1, h2, h3, p{{
+            color: black !important;
         }}
         </style>
         """,
@@ -39,19 +73,19 @@ label {
 """, unsafe_allow_html=True)
 area=st.number_input("**Area in sqft**")
 area=int(area)
-bedrooms=st.number_input("**Number Of Bedrooms**")
+bedrooms=st.number_input("**Number Of Bedrooms**", step=1, min_value=0, format="%d")
 bedrooms=int(bedrooms)
-bathrooms=st.number_input("**Number Of Bathrooms**")
+bathrooms=st.number_input("**Number Of Bathrooms**", step=1, min_value=0, format="%d")
 bathrooms=int(bathrooms)
-stories=st.number_input("**Number Of Stories**")
+stories=st.number_input("**Number Of Stories**", step=1, min_value=0, format="%d")
 stories=int(stories)
-parking=st.number_input("**Number Of Parking area**")
+parking=st.number_input("**Number Of Parking area**", step=1, min_value=0, format="%d")
 parking=int(parking)
 feature=[[area , bedrooms , bathrooms , stories , parking]]
 
 # Initialize session state
 with st.form("predicted_form"):
-    submitted = st.form_submit_button("💰**Predict Price**")
+    submitted = st.form_submit_button("💰**Predict Price**", type="primary")
 
 if submitted:
     if area > 0:  #if statement to check whether the input is valid or not.
