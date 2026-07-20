@@ -71,7 +71,7 @@ label {
 }
 </style>
 """, unsafe_allow_html=True)
-area=st.number_input("**Area in sqft**")
+area=st.number_input("**Area in sqft**", step=1, min_value=0, format="%d")
 area=int(area)
 bedrooms=st.number_input("**Number Of Bedrooms**", step=1, min_value=0, format="%d")
 bedrooms=int(bedrooms)
